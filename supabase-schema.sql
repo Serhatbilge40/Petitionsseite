@@ -19,6 +19,7 @@ CREATE TABLE signatures (
   semester TEXT,
   comment TEXT,
   privacy_accepted BOOLEAN NOT NULL DEFAULT false,
+  show_name BOOLEAN NOT NULL DEFAULT false,
   signed_at TIMESTAMPTZ DEFAULT now(),
   ip_hash TEXT
 );
@@ -48,7 +49,7 @@ CREATE POLICY "Anon darf unterschreiben"
 -- SICHERE VIEW: Nur öffentliche Felder nach außen
 -- ============================================================
 CREATE OR REPLACE VIEW public_signatures AS
-SELECT id, first_name, last_name, fach, comment, signed_at
+SELECT id, first_name, last_name, fach, comment, signed_at, show_name
 FROM signatures;
 
 GRANT SELECT ON public_signatures TO anon;
@@ -121,5 +122,39 @@ DECLARE
 BEGIN
   SELECT COUNT(*)::INTEGER INTO total FROM signatures;
   RETURN total;
+END;
+$$;
+
+-- Funktion: Unterschrift löschen (nur mit Admin-Passwort)
+CREATE OR REPLACE FUNCTION admin_delete_signature(pw TEXT, sig_id UUID)
+RETURNS VOID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, extensions
+AS $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM admin_config WHERE key = 'admin_pw' AND value = crypt(pw, value)
+  ) THEN
+    RAISE EXCEPTION 'Falsches Passwort';
+  END IF;
+  DELETE FROM signatures WHERE id = sig_id;
+END;
+$$;
+
+-- Funktion: Kommentar einer Unterschrift löschen (nur mit Admin-Passwort)
+CREATE OR REPLACE FUNCTION admin_clear_comment(pw TEXT, sig_id UUID)
+RETURNS VOID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, extensions
+AS $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM admin_config WHERE key = 'admin_pw' AND value = crypt(pw, value)
+  ) THEN
+    RAISE EXCEPTION 'Falsches Passwort';
+  END IF;
+  UPDATE signatures SET comment = NULL WHERE id = sig_id;
 END;
 $$;

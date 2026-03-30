@@ -192,6 +192,21 @@
       white-space: normal;
     }
 
+    .action-btns { display: flex; gap: .3rem; flex-wrap: nowrap; }
+    .action-btn {
+      padding: .3rem .5rem;
+      font-size: .7rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: opacity .2s;
+    }
+    .action-btn:hover { opacity: .8; }
+    .action-btn.del { background: #fee2e2; color: #dc2626; }
+    .action-btn.clr { background: #fef3c7; color: #b45309; }
+
     .back-link {
       display: inline-block;
       margin-top: 2rem;
@@ -331,6 +346,7 @@
             <th>Semester</th>
             <th>Kommentar</th>
             <th>Datum</th>
+            <th>Aktionen</th>
           </tr>
         </thead>
         <tbody id="sig-body"></tbody>
@@ -389,6 +405,7 @@
       }
 
       signaturesData = data || [];
+      adminPw = pw;
       showAdminPanel();
     }
 
@@ -403,7 +420,7 @@
 
       const tbody = document.getElementById('sig-body');
       tbody.innerHTML = signaturesData.map((s, i) => `
-        <tr>
+        <tr id="row-${s.id}">
           <td>${i + 1}</td>
           <td>${esc(s.first_name)}</td>
           <td>${esc(s.last_name)}</td>
@@ -413,6 +430,10 @@
           <td>${esc(s.semester)}</td>
           <td class="comment-cell" title="${esc(s.comment)}">${esc(s.comment)}</td>
           <td style="white-space:nowrap">${formatDate(s.signed_at)}</td>
+          <td class="action-btns">
+            ${s.comment ? `<button class="action-btn clr" onclick="clearComment('${s.id}')">Kommentar löschen</button>` : ''}
+            <button class="action-btn del" onclick="deleteSig('${s.id}')">Löschen</button>
+          </td>
         </tr>
       `).join('');
 
@@ -472,6 +493,25 @@
         return '"' + s.replace(/"/g, '""') + '"';
       }
       return s;
+    }
+
+    let adminPw = ''; // gespeichert nach Login
+
+    async function deleteSig(id) {
+      if (!confirm('Unterschrift wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
+      const { error } = await db.rpc('admin_delete_signature', { pw: adminPw, sig_id: id });
+      if (error) { alert('Fehler: ' + error.message); return; }
+      signaturesData = signaturesData.filter(s => s.id !== id);
+      showAdminPanel();
+    }
+
+    async function clearComment(id) {
+      if (!confirm('Kommentar dieser Unterschrift löschen?')) return;
+      const { error } = await db.rpc('admin_clear_comment', { pw: adminPw, sig_id: id });
+      if (error) { alert('Fehler: ' + error.message); return; }
+      const sig = signaturesData.find(s => s.id === id);
+      if (sig) sig.comment = null;
+      showAdminPanel();
     }
   </script>
 </body>

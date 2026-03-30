@@ -71,7 +71,7 @@ async function loadSignatures() {
 
   const { data, error } = await db
     .from('public_signatures')
-    .select('first_name, last_name, fach, comment, signed_at')
+    .select('first_name, last_name, fach, comment, signed_at, show_name')
     .order('signed_at', { ascending: false })
     .limit(200);
 
@@ -86,15 +86,18 @@ async function loadSignatures() {
   }
 
   const total = data.length;
-  container.innerHTML = data.map((s, i) => `
+  container.innerHTML = data.map((s, i) => {
+    const name = s.show_name ? `${esc(s.first_name)} ${esc(s.last_name)}` : 'Anonym';
+    return `
     <div class="sig-item">
       <div class="sig-top">
-        <span class="sig-name">${esc(s.first_name)} ${esc(s.last_name)}</span>
+        <span class="sig-name">${name}</span>
         <span class="sig-num">#${total - i}</span>
       </div>
       <div class="sig-meta">${esc(s.fach) || ''}${s.fach ? ' · ' : ''}${formatDate(s.signed_at)}</div>
       ${s.comment ? `<div class="sig-comment">„${esc(s.comment)}"</div>` : ''}
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // --- Unterschrift abgeben ---
@@ -114,6 +117,7 @@ async function submitSignature() {
   const fach = document.getElementById('fach').value.trim();
   const semester = document.getElementById('semester').value;
   const comment = document.getElementById('comment').value.trim();
+  const showName = document.getElementById('show-name').checked;
   const accepted = document.getElementById('privacy-accept').checked;
 
   // Validierung
@@ -151,6 +155,7 @@ async function submitSignature() {
     fach,
     semester: semester || null,
     comment: comment || null,
+    show_name: showName,
     privacy_accepted: accepted,
     ip_hash: ipHash
   };
