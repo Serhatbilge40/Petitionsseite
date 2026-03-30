@@ -187,10 +187,9 @@
     tr:hover td { background: var(--primary-light); }
 
     .comment-cell {
-      max-width: 200px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      max-width: 220px;
+      word-break: break-word;
+      white-space: normal;
     }
 
     .back-link {
@@ -202,12 +201,82 @@
     }
     .back-link:hover { color: var(--primary); }
 
-    /* Print styles */
+    /* Print / PDF styles – Hochformat A4 */
     @media print {
-      .actions, .back-link, #login-screen { display: none !important; }
-      .table-wrap { box-shadow: none; }
-      body { background: #fff; }
-      h1 { color: #000; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      body { background: #fff; font-size: 9pt; line-height: 1.4; }
+      .actions, .back-link, #login-screen, .top-bar { display: none !important; }
+      .container { max-width: 100%; padding: 0; margin: 0; }
+      .table-wrap { display: none !important; }
+
+      .print-header { display: block !important; }
+      .print-list { display: block !important; }
+
+      @page {
+        size: A4 portrait;
+        margin: 15mm 18mm;
+      }
+    }
+
+    /* Print Header */
+    .print-header {
+      display: none;
+      text-align: center;
+      margin-bottom: 1rem;
+      padding-bottom: .75rem;
+      border-bottom: 2px solid #14634a;
+    }
+    .print-header h2 { font-size: 14pt; color: #14634a; margin-bottom: .25rem; }
+    .print-header p { font-size: 9pt; color: #555; }
+
+    /* Print list – nur im Druck sichtbar */
+    .print-list { display: none; }
+    .print-entry {
+      padding: .45rem 0;
+      border-bottom: 1px solid #ddd;
+      page-break-inside: avoid;
+    }
+    .print-entry:last-child { border-bottom: none; }
+    .print-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .print-num {
+      font-weight: 700;
+      color: #14634a;
+      min-width: 2rem;
+      font-size: 9pt;
+    }
+    .print-name {
+      font-weight: 600;
+      font-size: 10pt;
+      flex: 1;
+    }
+    .print-date {
+      font-size: 8pt;
+      color: #888;
+    }
+    .print-details {
+      font-size: 8pt;
+      color: #555;
+      margin-top: 1px;
+      padding-left: 2rem;
+    }
+    .print-comment {
+      font-size: 8.5pt;
+      color: #333;
+      font-style: italic;
+      margin-top: 2px;
+      padding-left: 2rem;
+    }
+    .print-footer {
+      margin-top: 1.5rem;
+      padding-top: .75rem;
+      border-top: 2px solid #14634a;
+      font-size: 8pt;
+      color: #888;
+      text-align: center;
     }
 
     @media (max-width: 640px) {
@@ -244,6 +313,11 @@
       </div>
     </div>
 
+    <div class="print-header">
+      <h2>Petition: Gebetsbereich an der FH Dortmund</h2>
+      <p>Unterschriftenliste – Stand: <span id="print-date"></span> – Gesamt: <span id="print-count"></span> Unterschriften</p>
+    </div>
+
     <div class="table-wrap">
       <table id="sig-table">
         <thead>
@@ -264,6 +338,9 @@
     </div>
 
     <a href="index.html" class="back-link">← Zurück zur Petition</a>
+
+    <!-- Druckansicht: saubere Liste statt breite Tabelle -->
+    <div class="print-list" id="print-list"></div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -319,6 +396,10 @@
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-panel').style.display = 'block';
       document.getElementById('total-count').textContent = signaturesData.length;
+      document.getElementById('print-count').textContent = signaturesData.length;
+      document.getElementById('print-date').textContent = new Date().toLocaleDateString('de-DE', {
+        day: '2-digit', month: '2-digit', year: 'numeric'
+      });
 
       const tbody = document.getElementById('sig-body');
       tbody.innerHTML = signaturesData.map((s, i) => `
@@ -334,6 +415,25 @@
           <td style="white-space:nowrap">${formatDate(s.signed_at)}</td>
         </tr>
       `).join('');
+
+      // Druckansicht aufbauen
+      const printList = document.getElementById('print-list');
+      printList.innerHTML = signaturesData.map((s, i) => {
+        const details = [s.email, s.matrikelnummer, s.fach, s.semester].filter(Boolean).join(' · ');
+        return `
+        <div class="print-entry">
+          <div class="print-row-top">
+            <span class="print-num">${i + 1}.</span>
+            <span class="print-name">${esc(s.first_name)} ${esc(s.last_name)}</span>
+            <span class="print-date">${formatDate(s.signed_at)}</span>
+          </div>
+          <div class="print-details">${esc(details)}</div>
+          ${s.comment ? `<div class="print-comment">„${esc(s.comment)}"</div>` : ''}
+        </div>`;
+      }).join('') + `
+        <div class="print-footer">
+          Generiert am ${new Date().toLocaleDateString('de-DE')} · ${signaturesData.length} Unterschriften · petitionsseite.vercel.app
+        </div>`;
     }
 
     function downloadCSV() {
