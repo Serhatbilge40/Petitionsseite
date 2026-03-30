@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Petition: Gebetsbereich an der FH Dortmund</title>
+  <meta name="description" content="Wir bitten die Hochschulleitung der FH Dortmund um einen Gebetsbereich für Studierende. Unterschreibe jetzt!">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">🕌 Petition</div>
+    <h1>Gebetsbereich an der Fachhochschule Dortmund</h1>
+    <p class="hero-sub">An: <strong>Hochschulleitung & Gebäudemanagement der FH Dortmund</strong></p>
+    <div class="hero-stats">
+      <div class="stat-ring">
+        <svg viewBox="0 0 36 36" class="circular-chart">
+          <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          <path id="circle-progress" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+        </svg>
+        <div class="stat-ring-text">
+          <span id="hero-count" class="stat-number">0</span>
+          <span class="stat-label">von 100</span>
+        </div>
+      </div>
+      <span class="stat-caption">Unterschriften gesammelt</span>
+    </div>
+    <a href="#unterschreiben" class="cta-btn">✍️ Jetzt unterschreiben</a>
+  </section>
+
+  <!-- WARUM -->
+  <section class="content-section" id="warum">
+    <div class="container">
+      <h2>Worum geht es?</h2>
+      <div class="petition-text">
+        <p><em>Dortmund, 30.03.2026</em></p>
+        <p><strong>An die Hochschulleitung und das Gebäudemanagement der Fachhochschule Dortmund</strong></p>
+        <p>Sehr geehrte Damen und Herren,</p>
+        <p>wir wenden uns heute als Gemeinschaft von Studierenden an Sie, um ein für uns sehr wichtiges Anliegen anzusprechen.</p>
+        <p>Kürzlich wurde in Gebäude A in der vierten Etage, der von vielen von uns in den Pausen zwischen den Vorlesungen für das Gebet genutzt wurde, aus Sicherheitsgründen gesperrt. Wir haben das Gespräch mit den Verantwortlichen gesucht und vollstes Verständnis für diese Maßnahme. Die Sicherheit aller Studierenden und die einwandfreie Funktion der Notfenster haben selbstverständlich oberste Priorität.</p>
+        <p>Wir haben uns sehr darüber gefreut, auf Ihrem Hinweisschild zu lesen, dass die FH den Wunsch nach einem Gebetsbereich wahrnimmt und bereits an einer Lösung arbeitet. Dafür möchten wir uns im Voraus herzlich bedanken!</p>
+        <p>Da das tägliche Gebet für uns ein fester und wichtiger Bestandteil unseres Alltags ist, möchten wir die Zeit bis zu einer endgültigen Lösung gerne konstruktiv überbrücken. Der Hochschulalltag ist oft lang, und ein kleiner Rückzugsort hilft uns sehr, Studium und Glauben friedlich miteinander zu vereinbaren.</p>
+        <p><strong>Wir möchten Sie daher höflich um Folgendes bitten:</strong></p>
+        <p>Gibt es die Möglichkeit, uns für die Übergangszeit einen alternativen Ort zur Verfügung zu stellen? Dies muss kein großer oder aufwendiger Raum sein. Ein kleines, ungenutztes Büro, ein freier Seminarraum in den Randzeiten oder eine ruhige Nische, in der wir niemanden stören und keine Fluchtwege blockieren, würde uns bereits enorm helfen.</p>
+        <p><strong>Unser Angebot an Sie:</strong> Wir wissen, dass frühere Studierende sich für den alten Platz eingesetzt haben, und nun sehen wir uns in der Verantwortung. Wenn Sie uns einen Raum oder eine Fläche anvertrauen, garantieren wir Ihnen, dass wir als Gemeinschaft Verantwortung dafür übernehmen. Wir werden:</p>
+        <ul>
+          <li>strikt auf Sauberkeit und Ordnung achten,</li>
+          <li>sicherstellen, dass sich alle an die Hausordnung und Sicherheitsvorgaben halten,</li>
+          <li>feste Ansprechpartner aus unseren Reihen benennen, die für Sie bei Fragen erreichbar sind.</li>
+        </ul>
+        <p>Wir würden uns sehr freuen, wenn wir gemeinsam eine kurzfristige Übergangslösung finden könnten, bis Ihre offizielle Lösung steht. Gerne bieten wir Ihnen auch unsere Hilfe bei der Planung eines zukünftigen Raumes an.</p>
+        <p>Vielen Dank für Ihre Zeit, Ihr Verständnis und Ihre Bemühungen. Wir freuen uns sehr auf eine Rückmeldung und einen gemeinsamen Austausch.</p>
+        <p>Um zu zeigen, wie wichtig dieses Thema für unsere Gemeinschaft ist, haben wir eine Liste der Studierenden beigefügt, die diesen Wunsch unterstützen.</p>
+        <p>Mit freundlichen Grüßen<br><strong>Die unterzeichnenden Studierenden der Fachhochschule Dortmund</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNTERSCHREIBEN -->
+  <section class="content-section form-section" id="unterschreiben">
+    <div class="container">
+      <h2>Jetzt unterschreiben</h2>
+      <p class="section-sub">Mit meiner Unterschrift unterstütze ich den Wunsch nach einem Gebetsbereich an unserer Hochschule. Alle Personen, die diesen Ort nutzen werden, verpflichten sich zur verlässlichen Einhaltung der geltenden Regeln.</p>
+
+      <div id="sign-success" class="alert alert-success" style="display:none;">
+        <div class="alert-icon">✅</div>
+        <div>
+          <strong>Vielen Dank für deine Unterschrift!</strong>
+          <p>Du hilfst uns, den Gebetsbereich zu erhalten. Teile diese Seite, damit noch mehr Menschen unterschreiben.</p>
+          <div class="share-buttons">
+            <button onclick="shareWhatsApp()" class="share-btn whatsapp">WhatsApp</button>
+            <button onclick="copyPageLink()" class="share-btn copy">Link kopieren</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="sign-error" class="alert alert-error" style="display:none;"></div>
+
+      <form id="sign-form" class="sign-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first-name">Vorname *</label>
+            <input type="text" id="first-name" required maxlength="100" placeholder="Dein Vorname" autocomplete="given-name">
+          </div>
+          <div class="form-group">
+            <label for="last-name">Nachname *</label>
+            <input type="text" id="last-name" required maxlength="100" placeholder="Dein Nachname" autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Uni-E-Mail-Adresse *</label>
+          <input type="email" id="email" required maxlength="200" placeholder="vorname.nachname@uni.de" autocomplete="email">
+          <span class="hint">Wird nicht öffentlich angezeigt</span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="matrikelnummer">Matrikelnummer</label>
+            <input type="text" id="matrikelnummer" maxlength="20" placeholder="z.B. 1234567" autocomplete="off">
+            <span class="hint">Optional – wird nicht veröffentlicht</span>
+          </div>
+          <div class="form-group">
+            <label for="fach">Fachbereich *</label>
+            <input type="text" id="fach" required maxlength="150" placeholder="z.B. Informatik, Maschinenbau, Wirtschaft..." autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="semester">Semester</label>
+          <select id="semester">
+            <option value="">– Bitte wählen –</option>
+            <option>1. Semester</option>
+            <option>2. Semester</option>
+            <option>3. Semester</option>
+            <option>4. Semester</option>
+            <option>5. Semester</option>
+            <option>6. Semester</option>
+            <option>7. Semester</option>
+            <option>8. Semester</option>
+            <option>9. Semester</option>
+            <option>10+ Semester</option>
+            <option>Master</option>
+            <option>Promotion</option>
+            <option>Mitarbeiter/in</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="comment">Persönliche Nachricht <span class="optional">(optional)</span></label>
+          <textarea id="comment" maxlength="500" rows="3" placeholder="Warum ist dir der Gebetsbereich wichtig?"></textarea>
+        </div>
+
+        <div class="privacy-box">
+          <div class="checkbox-wrap">
+            <input type="checkbox" id="privacy-accept" required>
+            <label for="privacy-accept">Ich stimme der Verarbeitung meiner Daten zum Zweck dieser Petition zu und habe den <a href="#datenschutz">Datenschutzhinweis</a> gelesen. *</label>
+          </div>
+        </div>
+
+        <button type="submit" class="cta-btn submit-btn" id="sign-btn">
+          <span class="btn-text">✍️ Unterschrift abgeben</span>
+          <span class="btn-loading" style="display:none;">Wird gespeichert...</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- UNTERSTÜTZER -->
+  <section class="content-section" id="unterstuetzer">
+    <div class="container">
+      <h2>Unterstützer:innen <span id="supporters-count" class="count-badge">0</span></h2>
+      <div id="signatures-list" class="signatures-list">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEILEN -->
+  <section class="content-section share-section">
+    <div class="container" style="text-align:center;">
+      <h2>Teile diese Petition</h2>
+      <p class="section-sub">Je mehr Menschen unterschreiben, desto stärker ist unsere Stimme.</p>
+      <div class="share-buttons large">
+        <button onclick="shareWhatsApp()" class="share-btn whatsapp">📱 WhatsApp</button>
+        <button onclick="shareTelegram()" class="share-btn telegram">✈️ Telegram</button>
+        <button onclick="shareEmail()" class="share-btn email-share">📧 E-Mail</button>
+        <button onclick="copyPageLink()" class="share-btn copy">🔗 Link kopieren</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DATENSCHUTZ & IMPRESSUM (ausklappbar) -->
+  <section class="content-section legal-section" id="datenschutz">
+    <div class="container">
+      <details>
+        <summary>📋 Datenschutzhinweis</summary>
+        <div class="legal-content">
+          <h3>Welche Daten werden erhoben?</h3>
+          <p>Vorname, Nachname, E-Mail-Adresse, Matrikelnummer (optional), Studiengang, Semester, Kommentar (optional), gehashte IP-Adresse, Zeitstempel.</p>
+
+          <h3>Zweck</h3>
+          <p>Die Daten werden ausschließlich zur Durchführung und Dokumentation dieser Unterschriftensammlung verwendet. Sie werden der Hochschulleitung und dem Gebäudemanagement der FH Dortmund als Nachweis der Unterstützung vorgelegt.</p>
+
+          <h3>Was wird öffentlich angezeigt?</h3>
+          <p>Nur dein Vorname, Nachname, Studiengang und ggf. dein Kommentar. <strong>E-Mail und Matrikelnummer werden niemals öffentlich angezeigt.</strong></p>
+
+          <h3>Rechtsgrundlage</h3>
+          <p>Verarbeitung auf Grundlage deiner Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Du kannst deine Einwilligung jederzeit per E-Mail an [DEINE-EMAIL] widerrufen.</p>
+
+          <h3>Speicherdauer</h3>
+          <p>Die Daten werden gelöscht, sobald die Petition abgeschlossen ist, spätestens nach 12 Monaten.</p>
+
+          <h3>Hosting</h3>
+          <p>Die Daten werden bei Supabase (EU/US) gespeichert. IP-Adressen werden nur als SHA-256-Hash gespeichert.</p>
+
+          <h3>Deine Rechte</h3>
+          <p>Auskunft, Berichtigung, Löschung, Widerruf – schreibe an: [DEINE-EMAIL]</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>⚖️ Impressum</summary>
+        <div class="legal-content">
+          <p>
+            <strong>Muslime der FH Dortmund</strong><br>
+            Fachhochschule Dortmund<br>
+            Sonnenstraße 96, 44139 Dortmund<br>
+            E-Mail: info@muslime-fh-dortmund.de
+          </p>
+          <p>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:<br>[DEIN NAME]</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>✊ Gemeinsam für einen Gebetsbereich an der FH Dortmund</p>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

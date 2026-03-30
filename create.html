@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neue Petition starten</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html" class="logo">✍️ Petitionen</a>
+      <div class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="create.html" class="active">Petition starten</a>
+        <a href="dashboard.html">Dashboard</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="form-container">
+    <h1>Neue Petition starten</h1>
+    <p class="subtitle">Fülle das Formular aus, um deine Petition zu erstellen. Nach dem Erstellen erhältst du einen Link zum Teilen.</p>
+
+    <div id="success-message" class="alert alert-success" style="display: none;">
+      <strong>Petition erstellt!</strong>
+      <p>Dein Link zum Teilen: <a id="petition-link" href="#" target="_blank"></a></p>
+      <button class="btn btn-small btn-secondary" onclick="copyLink()" style="margin-top: 0.5rem;">Link kopieren</button>
+    </div>
+
+    <div id="error-message" class="alert alert-error" style="display: none;"></div>
+
+    <form id="create-petition-form" class="form-card">
+      <div class="form-group">
+        <label for="title">Titel der Petition *</label>
+        <input type="text" id="title" required maxlength="200" placeholder="z.B. Mehr Grünflächen in unserer Stadt">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Beschreibung *</label>
+        <p class="hint">Erkläre, warum diese Petition wichtig ist und was du erreichen möchtest.</p>
+        <textarea id="description" required maxlength="5000" placeholder="Beschreibe dein Anliegen ausführlich..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="target">An wen richtet sich die Petition?</label>
+        <input type="text" id="target" maxlength="200" placeholder="z.B. Stadtverwaltung Musterstadt">
+      </div>
+
+      <div class="form-group">
+        <label for="goal">Unterschriftenziel</label>
+        <input type="number" id="goal" min="10" max="1000000" value="100">
+      </div>
+
+      <hr style="border: none; border-top: 1px solid var(--border); margin: 1.5rem 0;">
+
+      <h3 style="margin-bottom: 1rem;">Deine Angaben als Initiator/in</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="creator-name">Dein Name *</label>
+          <input type="text" id="creator-name" required maxlength="100" placeholder="Vor- und Nachname">
+        </div>
+        <div class="form-group">
+          <label for="creator-email">Deine E-Mail *</label>
+          <input type="email" id="creator-email" required maxlength="200" placeholder="name@beispiel.de">
+        </div>
+      </div>
+
+      <div class="privacy-notice">
+        <h4>📋 Hinweis zum Datenschutz</h4>
+        <p>Dein Name wird als Initiator/in der Petition öffentlich angezeigt. Deine E-Mail-Adresse wird nicht veröffentlicht und nur zur Verwaltung deiner Petition verwendet. Alle Daten werden gemäß DSGVO verarbeitet.</p>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="submit-btn">Petition erstellen</button>
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2026 Petitionen-Plattform. Alle Rechte vorbehalten.</p>
+      <div class="footer-links">
+        <a href="datenschutz.html">Datenschutzerklärung</a>
+        <a href="impressum.html">Impressum</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.getElementById('create-petition-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await createPetition();
+    });
+  </script>
+</body>
+</html>

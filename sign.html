@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Petition unterschreiben</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html" class="logo">✍️ Petitionen</a>
+      <div class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="create.html">Petition starten</a>
+        <a href="dashboard.html">Dashboard</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="petition-detail">
+    <div id="loading" class="loading">Petition wird geladen...</div>
+    <div id="not-found" class="empty-state" style="display: none;">
+      <h3>Petition nicht gefunden</h3>
+      <p>Diese Petition existiert nicht oder wurde entfernt.</p>
+      <a href="index.html" class="btn btn-primary" style="margin-top: 1rem;">Zurück zur Startseite</a>
+    </div>
+
+    <div id="petition-content" style="display: none;">
+      <!-- Petition Header -->
+      <div class="petition-header">
+        <h1 id="petition-title"></h1>
+        <p class="target" id="petition-target"></p>
+
+        <div class="stats-bar">
+          <div class="stat">
+            <div class="number" id="sig-count">0</div>
+            <div class="label">Unterschriften</div>
+          </div>
+          <div class="stat">
+            <div class="number" id="sig-goal">100</div>
+            <div class="label">Ziel</div>
+          </div>
+          <div class="stat">
+            <div class="number" id="sig-percent">0%</div>
+            <div class="label">erreicht</div>
+          </div>
+        </div>
+
+        <div class="progress-bar" style="height: 12px;">
+          <div class="progress-fill" id="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+
+        <div class="description-full" id="petition-description"></div>
+
+        <p style="margin-top: 1rem; color: var(--text-light); font-size: 0.9rem;">
+          Gestartet von <strong id="petition-creator"></strong> am <span id="petition-date"></span>
+        </p>
+      </div>
+
+      <!-- Teilen -->
+      <div class="share-section">
+        <strong>Teile diese Petition:</strong>
+        <input type="text" id="share-url" readonly>
+        <button class="btn btn-small btn-primary" onclick="copyShareLink()">Kopieren</button>
+      </div>
+
+      <!-- Unterschreiben-Formular -->
+      <div id="sign-section">
+        <h2 style="margin-bottom: 1rem;">Jetzt unterschreiben</h2>
+
+        <div id="sign-success" class="alert alert-success" style="display: none;">
+          <strong>Vielen Dank!</strong> Deine Unterschrift wurde erfolgreich gespeichert.
+        </div>
+        <div id="sign-error" class="alert alert-error" style="display: none;"></div>
+
+        <form id="sign-form" class="form-card">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="first-name">Vorname *</label>
+              <input type="text" id="first-name" required maxlength="100" placeholder="Max">
+            </div>
+            <div class="form-group">
+              <label for="last-name">Nachname *</label>
+              <input type="text" id="last-name" required maxlength="100" placeholder="Mustermann">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="sign-email">E-Mail-Adresse *</label>
+            <input type="email" id="sign-email" required maxlength="200" placeholder="name@beispiel.de">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="zip-code">Postleitzahl</label>
+              <input type="text" id="zip-code" maxlength="10" placeholder="12345">
+            </div>
+            <div class="form-group">
+              <label for="city">Ort</label>
+              <input type="text" id="city" maxlength="100" placeholder="Berlin">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="comment">Kommentar (optional)</label>
+            <textarea id="comment" maxlength="1000" rows="3" placeholder="Warum unterstützt du diese Petition?"></textarea>
+          </div>
+
+          <div class="privacy-notice">
+            <h4>🔒 Datenschutzhinweis</h4>
+            <p>Dein Vor- und Nachname sowie dein Ort können öffentlich als Unterstützer/in angezeigt werden. Deine E-Mail-Adresse wird nicht veröffentlicht. Die Verarbeitung erfolgt auf Grundlage deiner Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO. Du kannst deine Einwilligung jederzeit widerrufen.</p>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-group">
+              <input type="checkbox" id="privacy-accept" required>
+              <label for="privacy-accept">Ich habe die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zum Zweck der Unterschriftensammlung zu. *</label>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-success" id="sign-btn">✍️ Jetzt unterschreiben</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Bisherige Unterschriften -->
+      <div class="signatures-list">
+        <h3>Bisherige Unterstützer/innen</h3>
+        <div id="signatures-container">
+          <div class="loading">Unterschriften werden geladen...</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2026 Petitionen-Plattform. Alle Rechte vorbehalten.</p>
+      <div class="footer-links">
+        <a href="datenschutz.html">Datenschutzerklärung</a>
+        <a href="impressum.html">Impressum</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPetitionDetail();
+    });
+    document.getElementById('sign-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await signPetition();
+    });
+  </script>
+</body>
+</html>

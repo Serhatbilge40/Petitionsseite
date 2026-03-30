@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – Alle Petitionen</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html" class="logo">✍️ Petitionen</a>
+      <div class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="create.html">Petition starten</a>
+        <a href="dashboard.html" class="active">Dashboard</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="dashboard">
+    <h1>Dashboard</h1>
+    <p class="subtitle">Übersicht aller Petitionen und ihrer Unterschriften.</p>
+
+    <div class="dashboard-search">
+      <input type="text" id="search-input" placeholder="Petition suchen..." oninput="filterDashboard()">
+    </div>
+
+    <div id="dashboard-loading" class="loading">Daten werden geladen...</div>
+
+    <div id="dashboard-table-container" style="display: none; overflow-x: auto;">
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>Titel</th>
+            <th>Unterschriften</th>
+            <th>Ziel</th>
+            <th>Fortschritt</th>
+            <th>Status</th>
+            <th>Erstellt am</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody id="dashboard-body">
+        </tbody>
+      </table>
+    </div>
+
+    <div id="dashboard-empty" class="empty-state" style="display: none;">
+      <h3>Noch keine Petitionen</h3>
+      <p>Erstelle deine erste Petition, um loszulegen.</p>
+      <a href="create.html" class="btn btn-primary" style="margin-top: 1rem;">Petition starten</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2026 Petitionen-Plattform. Alle Rechte vorbehalten.</p>
+      <div class="footer-links">
+        <a href="datenschutz.html">Datenschutzerklärung</a>
+        <a href="impressum.html">Impressum</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadDashboard();
+    });
+  </script>
+</body>
+</html>
